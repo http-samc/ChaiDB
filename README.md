@@ -135,7 +135,7 @@ One benefit of lists is how easy they are to sort. Fortunately, the high-level C
     "applyTo": "$#/2020-21/Gophers/games",
     "sortBy": "$~/num",
     "reverse": true,
-    "return": "max",
+    "return": -1,
     "sortName": "newest"
 }
 ```
@@ -143,6 +143,7 @@ Let's breakdown what each of these mean:
 - `applyTo` is a reference to a collection. As you saw with the `$SCHEMA` setup, anything starting with `$` is a special call to Chai's API. `$#` means 'put me in the top level data key'. After that, we just use the previously mentioned keypath to get us to the 'games' collection.
 - `sortBy` is a reference to a key that will always appear within every Document in the targeted collection. The `$~` operator means 'take me all the way to my parent', and we are specifying that in the parent we want the `num` key when we say `$~/num`. It is highly reccommended you have a schema enforced prior to sorting.
 - `reverse` is optional and tells Chai how to sort. By default, it goes low to high (numbers)/A-Z (letters). Since the `num` represent the order of the game in the season, with 1 being the first game they played, 2 being the second, etc. Since we want to get the newest games first (highest `num` value), we want `reverse` to be `true`.
+- `return` is a required paramater that tells Chai how much of the list to return. If it is a positive int, the first N items will be returned (or the complete list if the value is larger than the list). To explicitly call all items in the collections, set it equal to -1.
 - `sortName` is the name of this sorting configuration.
 
 If you get a `201 Created` response, you can now access the sorted collection with a `GET` request to `http://127.0.0.1:8080/mydb/2020-21/Gophers`, **BUT** we want to use the sort we defined earlier. To do that we need to use the `?newest=true` parameter. Our final URL should look like `http://127.0.0.1:8080/mydb/2020-21/Gophers?newest=true`.
